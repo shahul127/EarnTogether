@@ -25,14 +25,13 @@ function Login() {
       return;
     }
 
-    // For now, simply navigate to dashboard
+
     navigate("/dashboard");
   };
 
   return (
     <div className="auth-page">
 
-      {/* LEFT SIDE */}
       <div className="auth-left">
 
         <Link to="/" className="auth-brand">
@@ -79,7 +78,6 @@ function Login() {
       </div>
 
 
-      {/* RIGHT SIDE */}
       <div className="auth-right">
 
         <div className="auth-card">
@@ -97,8 +95,7 @@ function Login() {
 
           <form onSubmit={handleLogin}>
 
-            {/* EMAIL */}
-
+            
             <div className="input-group">
 
               <label>Email Address</label>
@@ -119,8 +116,7 @@ function Login() {
             </div>
 
 
-            {/* PASSWORD */}
-
+           
             <div className="input-group">
 
               <label>Password</label>
@@ -155,7 +151,7 @@ function Login() {
             </div>
 
 
-            {/* REMEMBER */}
+
 
             <div className="forgot-row">
 
@@ -177,7 +173,7 @@ function Login() {
             </div>
 
 
-            {/* LOGIN BUTTON */}
+           
 
             <button
               type="submit"
@@ -190,14 +186,14 @@ function Login() {
           </form>
 
 
-          {/* OR */}
+         
 
           <div className="auth-divider">
             <span>OR</span>
           </div>
 
 
-          {/* REGISTER */}
+          
 
           <p className="register-text">
 
@@ -210,7 +206,7 @@ function Login() {
           </p>
 
 
-          {/* HOME */}
+          
 
           <Link
             to="/"

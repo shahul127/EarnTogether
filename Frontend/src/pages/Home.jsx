@@ -18,7 +18,7 @@ function Home() {
   return (
     <div className="app">
 
-      {/* ================= NAVBAR ================= */}
+     
 
       <nav className="navbar">
 
@@ -73,8 +73,6 @@ function Home() {
 
       </nav>
 
-
-      {/* ================= HERO ================= */}
 
       <section
         className="hero"
@@ -140,7 +138,7 @@ function Home() {
           </div>
 
 
-          {/* Statistics */}
+        
 
           <div className="stats">
 
@@ -187,7 +185,7 @@ function Home() {
         </div>
 
 
-        {/* ================= AI MATCH CARD ================= */}
+
 
         <div className="hero-visual">
 
@@ -228,7 +226,6 @@ function Home() {
             </div>
 
 
-            {/* Worker */}
 
             <div className="worker">
 
@@ -262,7 +259,7 @@ function Home() {
             </div>
 
 
-            {/* Worker information */}
+
 
             <div className="worker-info-row">
 
@@ -299,7 +296,7 @@ function Home() {
             </div>
 
 
-            {/* Skill Match */}
+           
 
             <MatchBar
               label="Skill Match"
@@ -308,7 +305,7 @@ function Home() {
             />
 
 
-            {/* Trust Score */}
+           
 
             <MatchBar
               label="Trust Score"
@@ -332,7 +329,6 @@ function Home() {
       </section>
 
 
-      {/* ================= SERVICES ================= */}
 
       <section
         className="services-section"
@@ -397,7 +393,7 @@ function Home() {
       </section>
 
 
-      {/* ================= HOW IT WORKS ================= */}
+
 
       <section
         className="how-section"
@@ -455,7 +451,6 @@ function Home() {
       </section>
 
 
-      {/* ================= TRUST SECTION ================= */}
 
       <section
         className="trust-section"
@@ -537,7 +532,6 @@ function Home() {
         </div>
 
 
-        {/* Trust Score Card */}
 
         <div className="trust-card">
 
@@ -566,7 +560,7 @@ function Home() {
       </section>
 
 
-      {/* ================= CTA ================= */}
+
 
       <section className="cta-section">
 
@@ -602,7 +596,7 @@ function Home() {
       </section>
 
 
-      {/* ================= FOOTER ================= */}
+      
 
       <footer>
 
@@ -640,9 +634,6 @@ function Home() {
 }
 
 
-/* =====================================================
-   FEATURE CARD
-===================================================== */
 
 function FeatureCard({
   icon,
@@ -678,9 +669,6 @@ function FeatureCard({
 }
 
 
-/* =====================================================
-   HOW IT WORKS STEP
-===================================================== */
 
 function Step({
   number,
@@ -716,9 +704,6 @@ function Step({
 }
 
 
-/* =====================================================
-   MATCH BAR
-===================================================== */
 
 function MatchBar({
   label,

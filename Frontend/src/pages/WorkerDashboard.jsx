@@ -22,9 +22,25 @@ function Register() {
   function handleRegister(event) {
     event.preventDefault();
 
-    // Temporary registration
-    // Database integration will come later.
+    const name = event.target.querySelector('input[placeholder="Your full name"]').value;
+    const email = event.target.querySelector('input[type="email"]').value;
+    const phone = event.target.querySelector('input[type="tel"]').value;
+    const role = event.target.querySelector('input[name="role"]:checked').value;
+    const password = event.target.querySelector('input[type="password"]').value;
 
+    const worker_id = "W_" + Math.random().toString(36).substr(2, 9).toUpperCase();
+
+    const registeredUser = {
+      name,
+      email,
+      phone,
+      role,
+      password,
+      worker_id
+    };
+
+    localStorage.setItem("registeredUser", JSON.stringify(registeredUser));
+    alert("Registration successful! Please login.");
     navigate("/login");
   }
 
