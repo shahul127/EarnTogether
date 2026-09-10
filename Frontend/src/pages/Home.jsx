@@ -10,11 +10,16 @@ import {
 } from "lucide-react";
 
 import { Link } from "react-router-dom";
+import LanguageSelector from "../components/LanguageSelector";
+import { useLanguage } from "../i18n/LanguageContext";
 
 import "../App.css";
 
 
 function Home() {
+  const { language, t } = useLanguage();
+  const isTamil = language === "ta";
+
   return (
     <div className="app">
 
@@ -38,19 +43,19 @@ function Home() {
         <div className="nav-links">
 
           <a href="#home">
-            Home
+            {isTamil ? t.home : t.home}
           </a>
 
           <a href="#services">
-            Services
+            {isTamil ? t.services : t.services}
           </a>
 
           <a href="#how-it-works">
-            How It Works
+            {isTamil ? t.howItWorks : t.howItWorks}
           </a>
 
           <a href="#about">
-            About
+            {isTamil ? t.about : t.about}
           </a>
 
 
@@ -58,15 +63,16 @@ function Home() {
             to="/login"
             className="login-btn"
           >
-            Login
+            {isTamil ? t.login : t.login}
           </Link>
 
+          <LanguageSelector />
 
           <Link
             to="/register"
             className="signup-btn"
           >
-            Get Started
+            {isTamil ? t.getStarted : t.getStarted}
           </Link>
 
         </div>
@@ -85,29 +91,29 @@ function Home() {
 
             <Sparkles size={15} />
 
-            AI-POWERED SERVICE MATCHING
+            {language === "ta" ? "AI-சேவை பொருத்தம்" : "AI-POWERED SERVICE MATCHING"}
 
           </div>
 
 
           <h1>
 
-            Find the right
+            {language === "ta" ? "சரியான" : "Find the right"}
 
             <span>
-              skilled worker
+              {language === "ta" ? "திறமையான வேலைக்காரரை" : "skilled worker"}
             </span>
 
-            for any job.
+            {language === "ta" ? "தேடுங்கள்." : "for any job."}
 
           </h1>
 
 
           <p className="hero-description">
 
-            SkillConnect intelligently connects customers
-            with verified skilled professionals based on
-            skills, location, availability and trust.
+            {language === "ta"
+              ? "SkillConnect திறமையான தொழில் வீரர்களை திறமைகள், இடம், availability மற்றும் trust அடிப்படையில் இணைக்கிறது."
+              : "SkillConnect intelligently connects customers with verified skilled professionals based on skills, location, availability and trust."}
 
           </p>
 
@@ -115,11 +121,11 @@ function Home() {
           <div className="hero-actions">
 
             <Link
-              to="/login"
+              to="/register"
               className="primary-btn"
             >
 
-              Find a Worker
+              {isTamil ? t.findWorker : t.findWorker}
 
               <ArrowRight size={18} />
 
@@ -131,7 +137,7 @@ function Home() {
               className="outline-btn"
             >
 
-              Join as Worker
+              {isTamil ? t.joinWorker : t.joinWorker}
 
             </Link>
 
@@ -149,7 +155,7 @@ function Home() {
               </strong>
 
               <span>
-                Verified Workers
+                {language === "ta" ? "சரிபார்க்கப்பட்ட Workes" : "Verified Workers"}
               </span>
 
             </div>
@@ -162,7 +168,7 @@ function Home() {
               </strong>
 
               <span>
-                Jobs Completed
+                {language === "ta" ? "முடிக்கப்பட்ட Jobs" : "Jobs Completed"}
               </span>
 
             </div>
@@ -175,7 +181,7 @@ function Home() {
               </strong>
 
               <span>
-                Average Rating
+                {language === "ta" ? "சராசரி Rating" : "Average Rating"}
               </span>
 
             </div>

@@ -67,12 +67,20 @@ function WorkerRegister() {
 
       alert("Registration successful!");
 
-      localStorage.setItem(
-        "worker_id",
-        data.worker_id
-      );
+      const profile = {
+        worker_id: data.worker_id,
+        name: form.name,
+        phone: form.phone,
+        email: form.email,
+        skill: form.skill,
+        experience: form.experience,
+        location: form.location,
+      };
 
-      navigate("/assessment");
+      localStorage.setItem("worker_id", data.worker_id);
+      localStorage.setItem("workerProfile", JSON.stringify(profile));
+
+      navigate("/worker-dashboard");
     } catch (error) {
       console.error(error);
       alert("Registration செய்ய முடியல. Backend running-ல இருக்கானு check பண்ணுங்க.");

@@ -6,47 +6,30 @@ import Register from "./pages/Register";
 import WorkerRegister from "./pages/WorkerRegister";
 import Dashboard from "./pages/Dashboard";
 import WorkerDashboard from "./pages/WorkerDashboard";
-
+import WorkerAssessment from "./pages/WorkerAssessment";
+import AssessmentResult from "./pages/AssessmentResult";
+import WorkerProfile from "./pages/WorkerProfile";
+import { LanguageProvider } from "./i18n/LanguageContext";
 
 import "./App.css";
 
 function App() {
   return (
-    <BrowserRouter>
-
-      <Routes>
-
-        <Route
-          path="/"
-          element={<Home />}
-        />
-        <Route
-        path="/worker-register"
-        element={<WorkerRegister/>}/>
-        
-        <Route
-          path="/login"
-          element={<Login />}
-        />
-
-        <Route
-          path="/register"
-          element={<Register />}
-        />
-
-        <Route
-          path="/dashboard"
-          element={<Dashboard />}
-        />
-        
-        <Route
-          path="/worker-dashboard"
-          element={<WorkerDashboard />}
-        />
-
-      </Routes>
-
-    </BrowserRouter>
+    <LanguageProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/worker-register" element={<WorkerRegister />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/worker-dashboard" element={<WorkerDashboard />} />
+          <Route path="/worker-assessment" element={<WorkerAssessment />} />
+          <Route path="/assessment-result" element={<AssessmentResult />} />
+          <Route path="/worker-profile" element={<WorkerProfile />} />
+        </Routes>
+      </BrowserRouter>
+    </LanguageProvider>
   );
 }
 

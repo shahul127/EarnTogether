@@ -6,27 +6,61 @@ import {
   Phone,
   ArrowRight,
   Briefcase,
+  MapPin,
 } from "lucide-react";
 
 import {
   Link,
   useNavigate,
 } from "react-router-dom";
+import { useState } from "react";
+import LanguageSelector from "../components/LanguageSelector";
+import { useLanguage } from "../i18n/LanguageContext";
 
 import "../App.css";
 
 function Register() {
 
   const navigate = useNavigate();
+  const { language, t } = useLanguage();
+  const isTamil = language === "ta";
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    role: "customer",
+    password: "",
+    skill: "",
+    experience: "",
+    location: "",
+  });
+
+  function handleChange(event) {
+    const { name, value } = event.target;
+    setForm((current) => ({ ...current, [name]: value }));
+  }
 
   function handleRegister(event) {
     event.preventDefault();
 
-    const name = event.target.querySelector('input[placeholder="Your full name"]').value;
-    const email = event.target.querySelector('input[type="email"]').value;
-    const phone = event.target.querySelector('input[type="tel"]').value;
-    const role = event.target.querySelector('input[name="role"]:checked').value;
-    const password = event.target.querySelector('input[type="password"]').value;
+    const name = form.name.trim();
+    const email = form.email.trim().toLowerCase();
+    const phone = form.phone.trim();
+    const role = form.role;
+    const password = form.password.trim();
+    const skill = form.skill || "plumber";
+    const experience = form.experience || "1 Year";
+    const location = form.location || "Chennai";
+
+    if (!name || !email || !phone || !password) {
+      alert("Please fill all account details first.");
+      return;
+    }
+
+    if (role === "worker" && (!form.skill || !form.experience || !form.location)) {
+      alert("Please complete skill, experience and location for worker registration.");
+      return;
+    }
 
     const worker_id = "W_" + Math.random().toString(36).substr(2, 9).toUpperCase();
 
@@ -36,10 +70,31 @@ function Register() {
       phone,
       role,
       password,
-      worker_id
+      worker_id,
+      skill,
+      experience,
+      location,
+    };
+
+    const profile = {
+      worker_id,
+      name,
+      phone,
+      email,
+      skill,
+      experience,
+      location,
+      role,
     };
 
     localStorage.setItem("registeredUser", JSON.stringify(registeredUser));
+    localStorage.setItem("currentUser", JSON.stringify({ name, email, role, worker_id }));
+
+    if (role === "worker") {
+      localStorage.setItem("worker_id", worker_id);
+      localStorage.setItem("workerProfile", JSON.stringify(profile));
+    }
+
     alert("Registration successful! Please login.");
     navigate("/login");
   }
@@ -67,17 +122,17 @@ function Register() {
         <div className="auth-message">
 
           <span className="section-label">
-            JOIN SKILLCONNECT
+            {isTamil ? "SKILLCONNECT-இல் சேருங்கள்" : "JOIN SKILLCONNECT"}
           </span>
 
           <h1>
-            Your skills can
-            make a difference.
+            {isTamil ? "உங்க திறமை மாற்றத்தை உருவாக்கலாம்." : "Your skills can make a difference."}
           </h1>
 
           <p>
-            Create your account and connect with
-            customers looking for skilled professionals.
+            {isTamil
+              ? "கணக்கு உருவாக்கி, திறமையான தொழில் நிபுணர்களை தேடுங்கள்."
+              : "Create your account and connect with customers looking for skilled professionals."}
           </p>
 
         </div>
@@ -89,7 +144,7 @@ function Register() {
             <Briefcase size={19} />
 
             <span>
-              Find skilled workers
+              {isTamil ? "திறமையான வேலைக்காரர்களை தேடுங்கள்" : "Find skilled workers"}
             </span>
           </div>
 
@@ -97,7 +152,7 @@ function Register() {
             <User size={19} />
 
             <span>
-              Offer your professional skills
+              {isTamil ? "உங்க திறமையை வழங்குங்கள்" : "Offer your professional skills"}
             </span>
           </div>
 
@@ -114,13 +169,18 @@ function Register() {
 
           <div className="auth-card-header">
 
-            <h2>
-              Create Account
-            </h2>
+            <div className="login-language-row">
+              <div>
+                <h2>
+                  {isTamil ? t.createAccount : t.createAccount}
+                </h2>
 
-            <p>
-              Join SkillConnect today
-            </p>
+                <p>
+                  {isTamil ? t.createAccountSubtitle : t.createAccountSubtitle}
+                </p>
+              </div>
+              <LanguageSelector />
+            </div>
 
           </div>
 
@@ -130,7 +190,7 @@ function Register() {
             <div className="input-group">
 
               <label>
-                Full Name
+                {isTamil ? t.fullName : t.fullName}
               </label>
 
               <div className="input-wrapper">
@@ -139,7 +199,10 @@ function Register() {
 
                 <input
                   type="text"
+                  name="name"
                   placeholder="Your full name"
+                  value={form.name}
+                  onChange={handleChange}
                   required
                 />
 
@@ -151,7 +214,7 @@ function Register() {
             <div className="input-group">
 
               <label>
-                Email Address
+                {isTamil ? t.emailAddress : t.emailAddress}
               </label>
 
               <div className="input-wrapper">
@@ -160,7 +223,10 @@ function Register() {
 
                 <input
                   type="email"
+                  name="email"
                   placeholder="you@example.com"
+                  value={form.email}
+                  onChange={handleChange}
                   required
                 />
 
@@ -172,7 +238,7 @@ function Register() {
             <div className="input-group">
 
               <label>
-                Phone Number
+                {isTamil ? t.phoneNumber : t.phoneNumber}
               </label>
 
               <div className="input-wrapper">
@@ -181,7 +247,10 @@ function Register() {
 
                 <input
                   type="tel"
+                  name="phone"
                   placeholder="+91 XXXXX XXXXX"
+                  value={form.phone}
+                  onChange={handleChange}
                   required
                 />
 
@@ -193,7 +262,7 @@ function Register() {
             <div className="input-group">
 
               <label>
-                Account Type
+                {isTamil ? t.accountType : t.accountType}
               </label>
 
               <div className="role-selection">
@@ -204,11 +273,12 @@ function Register() {
                     type="radio"
                     name="role"
                     value="customer"
-                    defaultChecked
+                    checked={form.role === "customer"}
+                    onChange={handleChange}
                   />
 
                   <span>
-                    Customer
+                    {isTamil ? t.roleCustomer : t.roleCustomer}
                   </span>
 
                 </label>
@@ -220,10 +290,12 @@ function Register() {
                     type="radio"
                     name="role"
                     value="worker"
+                    checked={form.role === "worker"}
+                    onChange={handleChange}
                   />
 
                   <span>
-                    Skilled Worker
+                    {isTamil ? t.roleWorker : t.roleWorker}
                   </span>
 
                 </label>
@@ -232,11 +304,71 @@ function Register() {
 
             </div>
 
+            {form.role === "worker" && (
+              <>
+                <div className="input-group">
+                  <label>
+                    {isTamil ? t.skill : t.skill}
+                  </label>
+                  <div className="input-wrapper">
+                    <Briefcase size={18} />
+                    <select
+                      name="skill"
+                      value={form.skill}
+                      onChange={handleChange}
+                      required
+                    >
+                      <option value="">Select your skill</option>
+                      <option value="plumber">Plumber</option>
+                      <option value="electrician">Electrician</option>
+                      <option value="carpenter">Carpenter</option>
+                      <option value="ac_technician">AC Technician</option>
+                      <option value="mechanic">Mechanic</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="input-group">
+                  <label>
+                    {isTamil ? t.experienceLabel : t.experienceLabel}
+                  </label>
+                  <div className="input-wrapper">
+                    <Briefcase size={18} />
+                    <input
+                      type="text"
+                      name="experience"
+                      placeholder="Example: 3 Years"
+                      value={form.experience}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="input-group">
+                  <label>
+                    {isTamil ? t.location : t.location}
+                  </label>
+                  <div className="input-wrapper">
+                    <MapPin size={18} />
+                    <input
+                      type="text"
+                      name="location"
+                      placeholder="Your city or area"
+                      value={form.location}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                </div>
+              </>
+            )}
+
 
             <div className="input-group">
 
               <label>
-                Password
+                {isTamil ? t.password : t.password}
               </label>
 
               <div className="input-wrapper">
@@ -245,7 +377,10 @@ function Register() {
 
                 <input
                   type="password"
+                  name="password"
                   placeholder="Create a password"
+                  value={form.password}
+                  onChange={handleChange}
                   required
                 />
 

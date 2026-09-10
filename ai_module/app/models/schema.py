@@ -9,6 +9,7 @@ class AnswerRequest(BaseModel):
     question_index: int
     answer: str
     expected_answer: str
+    key_concepts: list[str] = []
 
 class ScoreRequest(BaseModel):
     ai_score: float

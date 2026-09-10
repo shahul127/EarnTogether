@@ -1,297 +1,95 @@
-import {
-  Wrench,
-  User,
-  Mail,
-  Lock,
-  Phone,
-  ArrowRight,
-  Briefcase,
-} from "lucide-react";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Wrench, User, MapPin, Award, Briefcase, ArrowRight } from "lucide-react";
+import LanguageSelector from "../components/LanguageSelector";
+import { useLanguage } from "../i18n/LanguageContext";
 
-import {
-  Link,
-  useNavigate,
-} from "react-router-dom";
-
-import "../App.css";
-
-function Register() {
-
+function WorkerDashboard() {
   const navigate = useNavigate();
+  const { t } = useLanguage();
+  const [worker, setWorker] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("workerProfile") || "{}");
+    } catch {
+      return {};
+    }
+  });
 
-  function handleRegister(event) {
-    event.preventDefault();
-
-    const name = event.target.querySelector('input[placeholder="Your full name"]').value;
-    const email = event.target.querySelector('input[type="email"]').value;
-    const phone = event.target.querySelector('input[type="tel"]').value;
-    const role = event.target.querySelector('input[name="role"]:checked').value;
-    const password = event.target.querySelector('input[type="password"]').value;
-
-    const worker_id = "W_" + Math.random().toString(36).substr(2, 9).toUpperCase();
-
-    const registeredUser = {
-      name,
-      email,
-      phone,
-      role,
-      password,
-      worker_id
-    };
-
-    localStorage.setItem("registeredUser", JSON.stringify(registeredUser));
-    alert("Registration successful! Please login.");
-    navigate("/login");
-  }
+  useEffect(() => {
+    const stored = localStorage.getItem("workerProfile");
+    if (stored) {
+      try {
+        setWorker(JSON.parse(stored));
+      } catch {
+        setWorker({});
+      }
+    }
+  }, []);
 
   return (
-    <div className="auth-page">
-
-      {/* LEFT */}
-
-      <div className="auth-left">
-
-        <div className="auth-brand">
-
+    <div className="worker-dashboard-page">
+      <nav className="worker-topbar">
+        <div className="brand">
           <div className="brand-icon">
             <Wrench size={21} />
           </div>
-
-          <span>
-            SkillConnect
-          </span>
-
+          <span>SkillConnect</span>
         </div>
+        <LanguageSelector />
+      </nav>
 
-
-        <div className="auth-message">
-
-          <span className="section-label">
-            JOIN SKILLCONNECT
-          </span>
-
-          <h1>
-            Your skills can
-            make a difference.
-          </h1>
-
-          <p>
-            Create your account and connect with
-            customers looking for skilled professionals.
-          </p>
-
-        </div>
-
-
-        <div className="register-options">
-
-          <div>
-            <Briefcase size={19} />
-
-            <span>
-              Find skilled workers
-            </span>
+      <main className="worker-dashboard">
+        <section className="worker-dashboard-card">
+          <div className="worker-dashboard-header">
+            <div>
+              <span className="section-label">{t.workerDashboard}</span>
+              <h1>{t.hello}, {worker.name || "Worker"} 👋</h1>
+              <div className="worker-dashboard-skill">
+                <Wrench size={18} />
+                <span>{worker.skill || "Plumber"}</span>
+              </div>
+              <div className="worker-dashboard-meta">
+                <span><Briefcase size={16} /> {t.experience}: {worker.experience || "3 Years"}</span>
+                <span><MapPin size={16} /> {worker.location || "Chennai"}</span>
+              </div>
+            </div>
+            <div className="worker-dashboard-actions">
+              <button className="primary-btn worker-start-btn" onClick={() => navigate("/worker-assessment")}> 
+                <ArrowRight size={18} /> {t.startAssessment}
+              </button>
+              <Link to="/worker-profile" className="outline-btn small-btn">
+                <User size={16} /> {t.profile}
+              </Link>
+            </div>
           </div>
 
-          <div>
-            <User size={19} />
+          <div className="worker-dashboard-grid">
+            <section className="worker-score-panel">
+              <div className="worker-panel-icon">
+                <Award size={26} />
+              </div>
+              <div>
+                <span className="section-label">{t.aiSkillScore}</span>
+                <div className="worker-score-number">
+                  {typeof worker.ai_score === "number" ? `${worker.ai_score} / 100` : t.notAssessedYet}
+                </div>
+              </div>
+            </section>
 
-            <span>
-              Offer your professional skills
-            </span>
+            <section className="worker-assessment-panel">
+              <div className="worker-panel-icon">
+                <Wrench size={26} />
+              </div>
+              <div>
+                <span className="section-label">{t.skillAssessment}</span>
+                <p className="worker-panel-copy">{t.skillTestCompleted}</p>
+              </div>
+            </section>
           </div>
-
-        </div>
-
-      </div>
-
-
-      {/* RIGHT */}
-
-      <div className="auth-right">
-
-        <div className="auth-card register-card">
-
-          <div className="auth-card-header">
-
-            <h2>
-              Create Account
-            </h2>
-
-            <p>
-              Join SkillConnect today
-            </p>
-
-          </div>
-
-
-          <form onSubmit={handleRegister}>
-
-            <div className="input-group">
-
-              <label>
-                Full Name
-              </label>
-
-              <div className="input-wrapper">
-
-                <User size={18} />
-
-                <input
-                  type="text"
-                  placeholder="Your full name"
-                  required
-                />
-
-              </div>
-
-            </div>
-
-
-            <div className="input-group">
-
-              <label>
-                Email Address
-              </label>
-
-              <div className="input-wrapper">
-
-                <Mail size={18} />
-
-                <input
-                  type="email"
-                  placeholder="you@example.com"
-                  required
-                />
-
-              </div>
-
-            </div>
-
-
-            <div className="input-group">
-
-              <label>
-                Phone Number
-              </label>
-
-              <div className="input-wrapper">
-
-                <Phone size={18} />
-
-                <input
-                  type="tel"
-                  placeholder="+91 XXXXX XXXXX"
-                  required
-                />
-
-              </div>
-
-            </div>
-
-
-            <div className="input-group">
-
-              <label>
-                Account Type
-              </label>
-
-              <div className="role-selection">
-
-                <label className="role-option">
-
-                  <input
-                    type="radio"
-                    name="role"
-                    value="customer"
-                    defaultChecked
-                  />
-
-                  <span>
-                    Customer
-                  </span>
-
-                </label>
-
-
-                <label className="role-option">
-
-                  <input
-                    type="radio"
-                    name="role"
-                    value="worker"
-                  />
-
-                  <span>
-                    Skilled Worker
-                  </span>
-
-                </label>
-
-              </div>
-
-            </div>
-
-
-            <div className="input-group">
-
-              <label>
-                Password
-              </label>
-
-              <div className="input-wrapper">
-
-                <Lock size={18} />
-
-                <input
-                  type="password"
-                  placeholder="Create a password"
-                  required
-                />
-
-              </div>
-
-            </div>
-
-
-            <button
-              type="submit"
-              className="auth-submit"
-            >
-
-              Create Account
-
-              <ArrowRight size={18} />
-
-            </button>
-
-          </form>
-
-
-          <p className="register-text">
-
-            Already have an account?
-
-            <Link to="/login">
-              Login
-            </Link>
-
-          </p>
-
-
-          <Link
-            to="/"
-            className="back-home"
-          >
-            ← Back to SkillConnect
-          </Link>
-
-        </div>
-
-      </div>
-
+        </section>
+      </main>
     </div>
   );
 }
 
-export default Register;
+export default WorkerDashboard;

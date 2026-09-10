@@ -9,9 +9,13 @@ import {
   ArrowRight,
   ShieldCheck,
 } from "lucide-react";
+import LanguageSelector from "../components/LanguageSelector";
+import { useLanguage } from "../i18n/LanguageContext";
 
 function Login() {
   const navigate = useNavigate();
+  const { language, t } = useLanguage();
+  const isTamil = language === "ta";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,8 +29,51 @@ function Login() {
       return;
     }
 
+    let registeredUser = null;
+    try {
+      registeredUser = JSON.parse(localStorage.getItem("registeredUser") || "{}");
+    } catch {
+      registeredUser = null;
+    }
 
-    navigate("/dashboard");
+    if (
+      registeredUser &&
+      registeredUser.email === email.trim().toLowerCase() &&
+      registeredUser.password === password.trim()
+    ) {
+      localStorage.setItem(
+        "currentUser",
+        JSON.stringify({
+          name: registeredUser.name,
+          email: registeredUser.email,
+          role: registeredUser.role,
+          worker_id: registeredUser.worker_id,
+        })
+      );
+
+      if (registeredUser.role === "worker") {
+        localStorage.setItem("worker_id", registeredUser.worker_id || "");
+        localStorage.setItem(
+          "workerProfile",
+          JSON.stringify({
+            worker_id: registeredUser.worker_id || "",
+            name: registeredUser.name,
+            phone: registeredUser.phone || "",
+            email: registeredUser.email,
+            skill: registeredUser.skill || "plumber",
+            experience: registeredUser.experience || "1 Year",
+            location: registeredUser.location || "Chennai",
+            role: "worker",
+          })
+        );
+        navigate("/worker-dashboard");
+      } else {
+        navigate("/dashboard");
+      }
+      return;
+    }
+
+    alert("No matching account found. Please create an account first.");
   };
 
   return (
@@ -51,12 +98,13 @@ function Login() {
           </span>
 
           <h1>
-            Connect with the right professional.
+            {isTamil ? "சரியான தொழில் நிபுணரை கண்டுபிடியுங்கள்." : "Connect with the right professional."}
           </h1>
 
           <p>
-            Find trusted skilled workers using AI-powered
-            matching, location intelligence and trust scores.
+            {isTamil
+              ? "AI அடிப்படையிலான matching, location intelligence மற்றும் trust scores மூலம் நம்பகமான வேலைக்காரர்களை கண்டுபிடியுங்கள்."
+              : "Find trusted skilled workers using AI-powered matching, location intelligence and trust scores."}
           </p>
 
           <div className="auth-feature">
@@ -64,10 +112,10 @@ function Login() {
             <ShieldCheck size={25} />
 
             <div>
-              <strong>Trusted Professionals</strong>
+              <strong>{isTamil ? "நம்பகமான தொழில் நிபுணர்கள்" : "Trusted Professionals"}</strong>
 
               <p>
-                Verified workers and transparent ratings.
+                {isTamil ? "சரிபார்க்கப்பட்ட வேலைக்காரர்கள் மற்றும் வெளிப்படையான ratings." : "Verified workers and transparent ratings."}
               </p>
             </div>
 
@@ -84,11 +132,15 @@ function Login() {
 
           <div className="auth-card-header">
 
-            <h2>Welcome back</h2>
-
-            <p>
-              Login to your SkillConnect account
-            </p>
+            <div className="login-language-row">
+              <div>
+                <h2>{isTamil ? t.welcomeBack : t.welcomeBack}</h2>
+                <p>
+                  {isTamil ? t.authLoginSubtitle : t.authLoginSubtitle}
+                </p>
+              </div>
+              <LanguageSelector />
+            </div>
 
           </div>
 
@@ -98,7 +150,7 @@ function Login() {
             
             <div className="input-group">
 
-              <label>Email Address</label>
+              <label>{isTamil ? "மின்னஞ்சல்" : "Email Address"}</label>
 
               <div className="input-wrapper">
 
@@ -106,7 +158,7 @@ function Login() {
 
                 <input
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder={isTamil ? "உங்க email-ஐ உள்ளிடுங்க" : "Enter your email"}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -119,7 +171,7 @@ function Login() {
            
             <div className="input-group">
 
-              <label>Password</label>
+              <label>{isTamil ? "கடவுச்சொல்" : "Password"}</label>
 
               <div className="input-wrapper">
 
@@ -127,7 +179,7 @@ function Login() {
 
                 <input
                   type={showPassword ? "text" : "password"}
-                  placeholder="Enter your password"
+                  placeholder={isTamil ? "உங்க password-ஐ உள்ளிடுங்க" : "Enter your password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
@@ -159,7 +211,7 @@ function Login() {
 
                 <input type="checkbox" />
 
-                <span>Remember me</span>
+                <span>{isTamil ? "என்னை நினைவில் வை" : "Remember me"}</span>
 
               </label>
 
@@ -167,7 +219,7 @@ function Login() {
                 type="button"
                 className="forgot-btn"
               >
-                Forgot Password?
+                {isTamil ? "Password மறந்துடுச்சா?" : "Forgot Password?"}
               </button>
 
             </div>
@@ -179,7 +231,7 @@ function Login() {
               type="submit"
               className="auth-submit"
             >
-              Login
+              {isTamil ? "உள்நுழை" : "Login"}
               <ArrowRight size={18} />
             </button>
 

@@ -1,8 +1,11 @@
 import os
 import json
+from pathlib import Path
 from dotenv import load_dotenv
 from google import genai
-load_dotenv()
+
+load_dotenv(Path(__file__).resolve().parents[1] / ".env")
+
 client = genai.Client(
     api_key=os.getenv("GEMINI_API_KEY")
 )
@@ -61,7 +64,7 @@ Return ONLY valid JSON:
 ]
 """
     response = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model="gemini-3.6-flash",
         contents=prompt
     )
 

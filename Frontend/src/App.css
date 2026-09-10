@@ -1435,6 +1435,521 @@ footer {
 
 
 /* =========================================================
+   WORKER DASHBOARD / ASSESSMENT UI
+========================================================= */
+
+.worker-dashboard-page,
+.worker-assessment-page,
+.worker-profile-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #eef8f6, #ffffff);
+  color: #29323d;
+}
+
+.worker-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 40px;
+  background: #fff;
+  border-bottom: 1px solid #d7e3e8;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 22px;
+  font-weight: 800;
+  color: #1d8068;
+}
+
+.brand-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #eaf8f5;
+  color: #1d8068;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.language-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.language-btn {
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid #b5c3bd;
+  background: #fff;
+  color: #425a54;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.language-btn.active {
+  background: #1d8068;
+  border-color: #1d8068;
+  color: #fff;
+}
+
+.worker-dashboard {
+  padding: 24px;
+}
+
+.worker-dashboard-card,
+.worker-assessment-card,
+.worker-profile-card,
+.worker-result-card {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px;
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 0 16px 50px rgba(32, 82, 76, 0.12);
+}
+
+.worker-dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.worker-dashboard-header h1 {
+  font-size: clamp(34px, 4vw, 45px);
+  color: #20342f;
+  margin: 12px 0;
+}
+
+.worker-dashboard-skill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0;
+  color: #1d8068;
+  font-weight: 800;
+}
+
+.worker-dashboard-meta {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  color: #4b6570;
+  font-weight: 700;
+}
+
+.worker-dashboard-meta span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.worker-dashboard-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+}
+
+.worker-start-btn {
+  min-width: 220px;
+  justify-content: center;
+}
+
+.small-btn {
+  min-width: 180px;
+  text-align: center;
+}
+
+.worker-dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(260px, 1fr));
+  gap: 20px;
+  margin-top: 24px;
+}
+
+.worker-score-panel,
+.worker-assessment-panel {
+  padding: 26px;
+  border-radius: 20px;
+  border: 1px solid #dcebe7;
+  background: #eefaf7;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.worker-panel-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #1d8068;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.worker-score-number {
+  font-size: 34px;
+  font-weight: 800;
+  color: #0f6c56;
+  margin-top: 8px;
+}
+
+.worker-panel-copy {
+  margin-top: 8px;
+  color: #51686a;
+}
+
+.worker-assessment-wrapper,
+.worker-result-wrapper,
+.worker-profile-wrapper {
+  padding: 30px 16px;
+}
+
+.worker-assessment-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.worker-assessment-top h1 {
+  font-size: clamp(30px, 4vw, 38px);
+  margin-top: 8px;
+}
+
+.icon-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #1d8068;
+  color: #fff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.assessment-form {
+  margin-top: 20px;
+}
+
+.question-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-weight: 800;
+  color: #49666d;
+  align-items: center;
+}
+
+.question-meta span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.question-box {
+  margin-top: 12px;
+  background: #f7faf8;
+  border-radius: 20px;
+  padding: 24px;
+  border: 1px solid #d4ece3;
+}
+
+.question-heading {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.question-number {
+  font-size: 20px;
+  font-weight: 800;
+  color: #123b32;
+}
+
+.question-total {
+  color: #65797f;
+}
+
+.question-job {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 14px 0;
+  font-size: 20px;
+  color: #1d8068;
+  font-weight: 800;
+}
+
+.question-text {
+  font-size: clamp(22px, 3vw, 28px);
+  line-height: 1.5;
+  color: #173d35;
+}
+
+.answer-zone {
+  margin-top: 20px;
+}
+
+.answer-label {
+  font-weight: 800;
+  color: #385b58;
+}
+
+.answer-input {
+  width: 100%;
+  min-height: 180px;
+  resize: vertical;
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid #a8cbca;
+  outline: none;
+  font-size: 16px;
+  color: #1b3837;
+  background: #fff;
+}
+
+.answer-input:focus {
+  border-color: #1d8068;
+  box-shadow: 0 0 0 4px rgba(29, 128, 104, 0.14);
+}
+
+.voice-row {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.speech-language-select {
+  min-height: 43px;
+  padding: 0 12px;
+  border: 1px solid #a8cbca;
+  border-radius: 12px;
+  color: #375d56;
+  background: #fff;
+  font-weight: 700;
+}
+
+.voice-status {
+  color: #375d56;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.voice-button {
+  background: #eff7f3;
+  color: #375d56;
+  border-radius: 16px;
+  padding: 12px 18px;
+  font-weight: 800;
+  border: 1px dashed #1d8068;
+  display: flex;
+  gap: 8px;
+}
+
+.disabled-button {
+  opacity: 0.8;
+}
+
+.assessment-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 22px;
+}
+
+.submit-answer {
+  min-width: 210px;
+}
+
+.message-card,
+.error-card {
+  margin-top: 20px;
+  padding: 16px;
+  border-radius: 14px;
+  background: #eef8f6;
+  color: #236f63;
+  font-weight: 700;
+}
+
+.error-card {
+  background: #feecef;
+  color: #a23c4e;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.profile-avatar {
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  background: #1d8068;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-header h1 {
+  font-size: clamp(34px, 4vw, 42px);
+}
+
+.profile-grid {
+  display: grid;
+  gap: 14px;
+  padding-top: 24px;
+}
+
+.profile-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 18px;
+  color: #405761;
+}
+
+.profile-status {
+  margin-top: 24px;
+}
+
+.status-green {
+  color: #0a8b54;
+  font-weight: 800;
+}
+
+.result-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #eaf8f4;
+  color: #1d8068;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.worker-result-card {
+  text-align: center;
+}
+
+.result-score {
+  margin: 20px 0;
+}
+
+.score-big {
+  font-size: clamp(44px, 5vw, 56px);
+  color: #1d8068;
+  font-weight: 900;
+}
+
+.score-label {
+  display: block;
+  font-size: 16px;
+  color: #5b6c71;
+  margin-top: 8px;
+}
+
+.result-message {
+  color: #475a60;
+  font-size: 18px;
+}
+
+.result-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 22px;
+}
+
+.primary-btn,
+.outline-btn {
+  border: none;
+  border-radius: 12px;
+  padding: 14px 22px;
+  font-weight: 800;
+  cursor: pointer;
+  min-height: 48px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.primary-btn {
+  background: #1d8068;
+  color: #fff;
+}
+
+.outline-btn {
+  background: transparent;
+  border: 1px solid #1d8068;
+  color: #1d8068;
+}
+
+.primary-btn:hover,
+.outline-btn:hover {
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .worker-topbar {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .worker-dashboard-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .worker-dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .worker-dashboard-card,
+  .worker-assessment-card,
+  .worker-profile-card,
+  .worker-result-card {
+    padding: 20px;
+  }
+
+  .worker-dashboard-actions {
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .worker-start-btn,
+  .small-btn {
+    width: 100%;
+  }
+
+  .language-selector {
+    align-self: flex-start;
+  }
+}
+
+/* =========================================================
    HOME RESPONSIVE
 ========================================================= */
 
