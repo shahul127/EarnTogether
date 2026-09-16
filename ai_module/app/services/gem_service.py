@@ -1,11 +1,11 @@
 import os
 import json
 from pathlib import Path
+
 from dotenv import load_dotenv
 from google import genai
 
-load_dotenv(Path(__file__).resolve().parents[1] / ".env")
-
+load_dotenv(Path(__file__).resolve().parents[2] / ".env")
 client = genai.Client(
     api_key=os.getenv("GEMINI_API_KEY")
 )

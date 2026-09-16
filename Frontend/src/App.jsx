@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import WorkerRegister from "./pages/WorkerRegister";
 import Dashboard from "./pages/Dashboard";
 import WorkerDashboard from "./pages/WorkerDashboard";
@@ -22,6 +24,8 @@ function App() {
           <Route path="/worker-register" element={<WorkerRegister />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/worker-dashboard" element={<WorkerDashboard />} />
           <Route path="/worker-assessment" element={<WorkerAssessment />} />

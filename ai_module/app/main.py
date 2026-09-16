@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from routes.assessment import router as assessment_router
+from app.routes.assessment import router as assessment_router
 # from routes.recommendation import router as recommendation_router
 # from routes.verification import router as verification_router
 

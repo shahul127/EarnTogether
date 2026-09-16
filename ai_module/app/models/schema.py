@@ -24,7 +24,4 @@ class WorkerSaveRequest(BaseModel):
     experience: str
     ai_score: float
 
-# class RecommendationRequest(BaseModel):
-#     skill: str
-#     experience: str = "1"
 

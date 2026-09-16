@@ -16,6 +16,7 @@ import {
 import { useState } from "react";
 import LanguageSelector from "../components/LanguageSelector";
 import { useLanguage } from "../i18n/LanguageContext";
+import { registerUser } from "../services/api";
 
 import "../App.css";
 
@@ -30,6 +31,7 @@ function Register() {
     phone: "",
     role: "customer",
     password: "",
+    confirm_password: "",
     skill: "",
     experience: "",
     location: "",
@@ -40,20 +42,26 @@ function Register() {
     setForm((current) => ({ ...current, [name]: value }));
   }
 
-  function handleRegister(event) {
+  async function handleRegister(event) {
     event.preventDefault();
 
     const name = form.name.trim();
     const email = form.email.trim().toLowerCase();
     const phone = form.phone.trim();
     const role = form.role;
-    const password = form.password.trim();
+    const password = form.password;
+    const confirm_password = form.confirm_password;
     const skill = form.skill || "plumber";
     const experience = form.experience || "1 Year";
     const location = form.location || "Chennai";
 
-    if (!name || !email || !phone || !password) {
+    if (!name || !email || !phone || !password || !confirm_password) {
       alert("Please fill all account details first.");
+      return;
+    }
+
+    if (password !== confirm_password) {
+      alert("Passwords do not match.");
       return;
     }
 
@@ -62,41 +70,23 @@ function Register() {
       return;
     }
 
-    const worker_id = "W_" + Math.random().toString(36).substr(2, 9).toUpperCase();
-
-    const registeredUser = {
-      name,
-      email,
-      phone,
-      role,
-      password,
-      worker_id,
-      skill,
-      experience,
-      location,
-    };
-
-    const profile = {
-      worker_id,
-      name,
-      phone,
-      email,
-      skill,
-      experience,
-      location,
-      role,
-    };
-
-    localStorage.setItem("registeredUser", JSON.stringify(registeredUser));
-    localStorage.setItem("currentUser", JSON.stringify({ name, email, role, worker_id }));
-
-    if (role === "worker") {
-      localStorage.setItem("worker_id", worker_id);
-      localStorage.setItem("workerProfile", JSON.stringify(profile));
+    try {
+      await registerUser({
+        name,
+        email,
+        phone,
+        role,
+        password,
+        confirm_password,
+        skill,
+        experience,
+        location,
+      });
+      alert("Registration successful! Please login.");
+      navigate("/login");
+    } catch (error) {
+      alert(error.message);
     }
-
-    alert("Registration successful! Please login.");
-    navigate("/login");
   }
 
   return (
@@ -202,6 +192,28 @@ function Register() {
                   name="name"
                   placeholder="Your full name"
                   value={form.name}
+                  onChange={handleChange}
+                  required
+                />
+
+              </div>
+
+            </div>
+
+
+            <div className="input-group">
+
+              <label>Confirm Password</label>
+
+              <div className="input-wrapper">
+
+                <Lock size={18} />
+
+                <input
+                  type="password"
+                  name="confirm_password"
+                  placeholder="Confirm your password"
+                  value={form.confirm_password}
                   onChange={handleChange}
                   required
                 />

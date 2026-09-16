@@ -1,61 +1,46 @@
+from sentence_transformers import SentenceTransformer
+from sklearn.metrics.pairwise import cosine_similarity
 import re
-from difflib import SequenceMatcher
-from functools import lru_cache
 
 
-@lru_cache(maxsize=1)
-def get_model():
-    try:
-        from sentence_transformers import SentenceTransformer
-    except Exception:
-        return None
-
-    try:
-        return SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
-    except Exception:
-        return None
+model = SentenceTransformer("vishnuexe/Morgan-Tanglish-v7")
 
 
 def normalize_text(text):
-    return " ".join(re.findall(r"\w+", str(text).lower(), flags=re.UNICODE))
+    return " ".join(
+        re.findall(r"\w+", str(text).lower(), flags=re.UNICODE)
+    )
 
 
-def concept_coverage(worker_answer, key_concepts):
-    answer = normalize_text(worker_answer)
-    concepts = [normalize_text(concept) for concept in (key_concepts or [])]
-    concepts = [concept for concept in concepts if concept]
-    if not answer or not concepts:
-        return None
+def concept_coverage(answer, concepts):
+    answer = normalize_text(answer)
 
-    matched = sum(1 for concept in concepts if concept in answer)
+    if not concepts:
+        return 0
+
+    matched = 0
+
+    for concept in concepts:
+        if normalize_text(concept) in answer:
+            matched += 1
+
     return matched / len(concepts)
 
+def evaluate_answer(answer, expected_answer, key_concepts=None):
 
-def lexical_fallback_score(worker_answer, expected_answer, key_concepts=None):
-    a = normalize_text(worker_answer)
-    b = normalize_text(expected_answer)
-    if not a or not b:
-        return 0.0
+    answer = normalize_text(answer)
+    expected_answer = normalize_text(expected_answer)
 
-    ratio = SequenceMatcher(None, a, b).ratio()
-    coverage = concept_coverage(worker_answer, key_concepts)
-    score = ratio if coverage is None else (ratio * 0.7) + (coverage * 0.3)
+    answer_vector = model.encode([answer])
+    expected_vector = model.encode([expected_answer])
+
+    similarity = cosine_similarity(
+        answer_vector,
+        expected_vector
+    )[0][0]
+
+    coverage = concept_coverage(answer, key_concepts)
+
+    score = (similarity * 0.8) + (coverage * 0.2)
+
     return round(float(score) * 100, 2)
-
-
-def evaluate_answer(worker_answer, expected_answer, key_concepts=None):
-    model = get_model()
-    if model is None:
-        return lexical_fallback_score(worker_answer, expected_answer, key_concepts)
-
-    try:
-        from sklearn.metrics.pairwise import cosine_similarity
-
-        worker_vector = model.encode([worker_answer])
-        expected_vector = model.encode([expected_answer])
-        similarity = cosine_similarity(worker_vector, expected_vector)[0][0]
-        coverage = concept_coverage(worker_answer, key_concepts)
-        score = similarity if coverage is None else (similarity * 0.8) + (coverage * 0.2)
-        return round(float(score) * 100, 2)
-    except Exception:
-        return lexical_fallback_score(worker_answer, expected_answer, key_concepts)

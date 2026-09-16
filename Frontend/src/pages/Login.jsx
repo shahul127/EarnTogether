@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import LanguageSelector from "../components/LanguageSelector";
 import { useLanguage } from "../i18n/LanguageContext";
+import { loginUser } from "../services/api";
 
 function Login() {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     if (email.trim() === "" || password.trim() === "") {
@@ -29,40 +30,27 @@ function Login() {
       return;
     }
 
-    let registeredUser = null;
     try {
-      registeredUser = JSON.parse(localStorage.getItem("registeredUser") || "{}");
-    } catch {
-      registeredUser = null;
-    }
+      const data = await loginUser({
+        email: email.trim().toLowerCase(),
+        password,
+      });
+      const user = data.user;
+      localStorage.setItem("authToken", data.token);
+      localStorage.setItem("currentUser", JSON.stringify(user));
 
-    if (
-      registeredUser &&
-      registeredUser.email === email.trim().toLowerCase() &&
-      registeredUser.password === password.trim()
-    ) {
-      localStorage.setItem(
-        "currentUser",
-        JSON.stringify({
-          name: registeredUser.name,
-          email: registeredUser.email,
-          role: registeredUser.role,
-          worker_id: registeredUser.worker_id,
-        })
-      );
-
-      if (registeredUser.role === "worker") {
-        localStorage.setItem("worker_id", registeredUser.worker_id || "");
+      if (user.role === "worker") {
+        localStorage.setItem("worker_id", user.user_id);
         localStorage.setItem(
           "workerProfile",
           JSON.stringify({
-            worker_id: registeredUser.worker_id || "",
-            name: registeredUser.name,
-            phone: registeredUser.phone || "",
-            email: registeredUser.email,
-            skill: registeredUser.skill || "plumber",
-            experience: registeredUser.experience || "1 Year",
-            location: registeredUser.location || "Chennai",
+            worker_id: user.user_id,
+            name: user.name,
+            phone: user.phone || "",
+            email: user.email,
+            skill: user.skill || "plumber",
+            experience: user.experience || "1 Year",
+            location: user.location || "Chennai",
             role: "worker",
           })
         );
@@ -70,10 +58,9 @@ function Login() {
       } else {
         navigate("/dashboard");
       }
-      return;
+    } catch (error) {
+      alert(error.message);
     }
-
-    alert("No matching account found. Please create an account first.");
   };
 
   return (
@@ -218,6 +205,7 @@ function Login() {
               <button
                 type="button"
                 className="forgot-btn"
+                onClick={() => navigate("/forgot-password")}
               >
                 {isTamil ? "Password மறந்துடுச்சா?" : "Forgot Password?"}
               </button>

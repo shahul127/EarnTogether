@@ -6,10 +6,10 @@ def calculate_skill_score(
 ):
 
     final_score = (
-        ai_score * 0.60 +
-        experience_score * 0.20 +
+        ai_score * 0.50 +
+        experience_score * 0.10 +
         verification_score * 0.10 +
-        review_score * 0.10
+        review_score * 0.30
     )
 
     return round(final_score, 2)
